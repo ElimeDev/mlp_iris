@@ -18,11 +18,12 @@ species = {
 X = data[features].to_numpy()
 y = np.zeros([150, 3])
 
-y[:51], y[51:101], y[101:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
+y[:50], y[50:100], y[100:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
 
 rng = np.random.default_rng(2)
-rng.shuffle(X, axis= 0)
-rng.shuffle(y, axis= 0)
+perm = rng.permutation(len(X))
+X = X[perm]
+y = y[perm]
 
 n_train = int(0.8 * y.shape[0])
 X_train, X_test = X[:n_train], X[n_train:]
@@ -32,7 +33,7 @@ nb_inputs = X.shape[1]
 layer_sizes = [6, 4, 3]
 mlp = Mlp(3, nb_inputs, layer_sizes)
 
-nb_iterations = 1000
+nb_iterations = 10000
 learning_rate = 0.1
 losses = mlp.train(X_train, y_train, X_test= X_test, y_test= y_test, nb_iteration= nb_iterations, learning_rate= learning_rate)
 
