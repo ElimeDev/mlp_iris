@@ -20,7 +20,7 @@ y = np.zeros([150, 3])
 
 y[:51], y[51:101], y[101:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
 
-rng = np.random.default_rng(4)
+rng = np.random.default_rng(2)
 rng.shuffle(X, axis= 0)
 rng.shuffle(y, axis= 0)
 
