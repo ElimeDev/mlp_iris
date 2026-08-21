@@ -51,10 +51,21 @@ class Mlp:
             self.layers[i].w -= learning_rate * dw
             self.layers[i].b -= learning_rate * db
 
-    def train(self, entries: np.ndarray, expected: np.ndarray, nb_iteration: int= 1000, learning_rate: float= 1.) -> list[float]: #return losses
-        losses = []
+    def train(self, X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray= None, y_test: np.ndarray= None, nb_iteration: int= 1000, learning_rate: float= 1.)\
+          -> tuple[list[float], list[float]] | list[float]: #return train_losses and test_losses or only train_losses
+        train_losses = []
+        if X_test is not None:
+            test_losses = []
+        
         for i in range(nb_iteration):
-            pred = self.predict(entries)
-            losses.append(self.mse(pred, expected))
-            self.gradient_descent(pred, expected, learning_rate)
-        return losses
+            pred = self.predict(X_train)
+            train_losses.append(self.mse(pred, y_train))
+            self.gradient_descent(pred, y_train, learning_rate)
+
+            if X_test is not None:
+                test_pred = self.predict(X_test)
+                test_losses.append(self.mse(test_pred, y_test))
+
+        if X_test is not None:
+            return (train_losses, test_losses)
+        return train_losses

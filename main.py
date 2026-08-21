@@ -20,7 +20,7 @@ y = np.zeros([150, 3])
 
 y[:51], y[51:101], y[101:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
 
-rng = np.random.default_rng(2)
+rng = np.random.default_rng(4)
 rng.shuffle(X, axis= 0)
 rng.shuffle(y, axis= 0)
 
@@ -32,12 +32,14 @@ nb_inputs = X.shape[1]
 layer_sizes = [6, 4, 3]
 mlp = Mlp(3, nb_inputs, layer_sizes)
 
-nb_iterations = 200
+nb_iterations = 1000
 learning_rate = 0.1
-losses = mlp.train(X_train, y_train, nb_iteration= nb_iterations, learning_rate= learning_rate)
+losses = mlp.train(X_train, y_train, X_test= X_test, y_test= y_test, nb_iteration= nb_iterations, learning_rate= learning_rate)
 
 x = np.arange(nb_iterations)
-y = losses
+y1 = losses[0]
+y2 = losses[1]
 
-plt.plot(x, y)
+plt.plot(x, y1)
+plt.plot(x, y2)
 plt.show()
