@@ -1,0 +1,43 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from mlp import *
+
+DATA_FILE_PATH = "data/Iris.csv"
+
+data = pd.read_csv(DATA_FILE_PATH)
+
+features = ["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"]
+species = { 
+    "Iris-setosa" : np.array([1, 0, 0]), 
+    "Iris-versicolor" : np.array([0, 1, 0]), 
+    "Iris-virginica" : np.array([0, 0, 1]) 
+    }
+
+X = data[features].to_numpy()
+y = np.zeros([150, 3])
+
+y[:51], y[51:101], y[101:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
+
+rng = np.random.default_rng(2)
+rng.shuffle(X, axis= 0)
+rng.shuffle(y, axis= 0)
+
+n_train = int(0.8 * y.shape[0])
+X_train, X_test = X[:n_train], X[n_train:]
+y_train, y_test = y[:n_train], y[n_train:]
+
+nb_inputs = X.shape[1]
+layer_sizes = [6, 4, 3]
+mlp = Mlp(3, nb_inputs, layer_sizes)
+
+nb_iterations = 200
+learning_rate = 0.1
+losses = mlp.train(X_train, y_train, nb_iteration= nb_iterations, learning_rate= learning_rate)
+
+x = np.arange(nb_iterations)
+y = losses
+
+plt.plot(x, y)
+plt.show()
