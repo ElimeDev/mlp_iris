@@ -37,6 +37,16 @@ nb_iterations = 10000
 learning_rate = 0.1
 losses = mlp.train(X_train, y_train, X_test= X_test, y_test= y_test, nb_iteration= nb_iterations, learning_rate= learning_rate)
 
+global_pred = mlp.predict(X)
+global_pred = np.rint(global_pred)
+global_accuracy = np.mean(global_pred == y)
+print("global accuracy : ", global_accuracy)
+
+test_pred = mlp.predict(X_test)
+test_pred = np.rint(test_pred)
+test_accuracy = np.mean(test_pred == y_test)
+print("test accuracy : ", test_accuracy)
+
 x = np.arange(nb_iterations)
 y1 = losses[0]
 y2 = losses[1]
