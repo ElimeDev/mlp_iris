@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mlp import *
+from src.mlp import *
 
 DATA_FILE_PATH = "data/Iris.csv"
 
