@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.mlp import *
+from mlp import *
 
 DATA_FILE_PATH = "data/Iris.csv"
 
@@ -31,7 +31,7 @@ y_train, y_test = y[:n_train], y[n_train:]
 
 nb_inputs = X.shape[1]
 layer_sizes = [nb_inputs, 6, 6, 3]
-mlp = Mlp(layer_sizes)
+mlp = MLP(layer_sizes)
 
 nb_iterations = 10000
 learning_rate = 0.1
