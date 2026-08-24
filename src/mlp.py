@@ -26,14 +26,11 @@ class Layer:
         return (dw, db, delta)
 
 class Mlp:
-    def __init__(self, nb_layers: int, nb_inputs: int, layer_sizes: list[int]):
-        self.nb_layers = nb_layers
+    def __init__(self, layer_sizes: list[int]):
+        self.nb_layers = len(layer_sizes) - 1
         self.layers = []
-        for i in range(nb_layers):
-            if i == 0:
-               self.layers.append(Layer(nb_inputs, layer_sizes[i]))
-            else:
-               self.layers.append(Layer(layer_sizes[i-1], layer_sizes[i]))
+        for i in range(1, len(layer_sizes)):
+            self.layers.append(Layer(layer_sizes[i-1], layer_sizes[i]))
 
     def mse(self, predicted: np.ndarray, expected: np.ndarray):
         return np.mean((expected - predicted)**2)

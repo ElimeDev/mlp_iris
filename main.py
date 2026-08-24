@@ -30,8 +30,8 @@ X_train, X_test = X[:n_train], X[n_train:]
 y_train, y_test = y[:n_train], y[n_train:]
 
 nb_inputs = X.shape[1]
-layer_sizes = [6, 4, 3]
-mlp = Mlp(3, nb_inputs, layer_sizes)
+layer_sizes = [nb_inputs, 6, 4, 3]
+mlp = Mlp(layer_sizes)
 
 nb_iterations = 10000
 learning_rate = 0.1
