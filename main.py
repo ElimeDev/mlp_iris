@@ -30,7 +30,7 @@ X_train, X_test = X[:n_train], X[n_train:]
 y_train, y_test = y[:n_train], y[n_train:]
 
 nb_inputs = X.shape[1]
-layer_sizes = [nb_inputs, 6, 4, 3]
+layer_sizes = [nb_inputs, 6, 6, 3]
 mlp = Mlp(layer_sizes)
 
 nb_iterations = 10000
