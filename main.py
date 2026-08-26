@@ -10,17 +10,15 @@ data = pd.read_csv(DATA_FILE_PATH)
 
 features = ["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"]
 species = { 
-    "Iris-setosa" : np.array([1, 0, 0]), 
-    "Iris-versicolor" : np.array([0, 1, 0]), 
-    "Iris-virginica" : np.array([0, 0, 1]) 
+    "Iris-setosa" : 0,
+    "Iris-versicolor" : 1,
+    "Iris-virginica" : 2
     }
 
 X = data[features].to_numpy()
-y = np.zeros([150, 3])
+y = data["Species"].map(species).to_numpy(dtype=int)
 
-y[:50], y[50:100], y[100:] = species["Iris-setosa"], species["Iris-versicolor"], species["Iris-virginica"]
-
-rng = np.random.default_rng(2)
+rng = np.random.default_rng(3)
 perm = rng.permutation(len(X))
 X = X[perm]
 y = y[perm]
@@ -32,25 +30,27 @@ y_train, y_test = y[:n_train], y[n_train:]
 nb_inputs = X.shape[1]
 layer_sizes = [nb_inputs, 6, 6, 3]
 mlp = MLP(layer_sizes)
+mlp.set_output_layers_activation(softmax, softmax_prime)
+mlp.set_cost_func(log_likelihood, log_likelihood_prime)
 
-nb_iterations = 10000
-learning_rate = 0.1
-losses = mlp.train(X_train, y_train, X_test= X_test, y_test= y_test, nb_iteration= nb_iterations, learning_rate= learning_rate)
+epochs = 10000
+learning_rate = 0.0005
+mlp.train(X_train, y_train, epochs= epochs, learning_rate= learning_rate)
+
+losses = mlp.get_last_training_data()["train_losses"]
 
 global_pred = mlp.predict(X)
-global_pred = np.rint(global_pred)
+global_pred = np.argmax(global_pred, axis=1)
 global_accuracy = np.mean(global_pred == y)
 print("global accuracy : ", global_accuracy)
 
 test_pred = mlp.predict(X_test)
-test_pred = np.rint(test_pred)
+test_pred = np.argmax(test_pred, axis=1)
 test_accuracy = np.mean(test_pred == y_test)
 print("test accuracy : ", test_accuracy)
 
-x = np.arange(nb_iterations)
-y1 = losses[0]
-y2 = losses[1]
+x = np.arange(epochs)
+y = losses
 
-plt.plot(x, y1)
-plt.plot(x, y2)
+plt.plot(x, y)
 plt.show()
